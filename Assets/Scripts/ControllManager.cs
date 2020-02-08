@@ -1,15 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class ControllManager : MonoBehaviour
 {
     private Camera mainCamera = null;
     private CardModule Select { get; set; } = null;
 
+    public GameObject menu = null;
+    public int cardSize = 0;
+    private int releaseNumber = 0; 
+
     private void Awake()
     {
         mainCamera = Camera.main;
+    }
+
+    public void OnStart()
+    {
+        releaseNumber = 0;
+        Select = null;
     }
 
     private void Update()
@@ -45,6 +57,16 @@ public class ControllManager : MonoBehaviour
                 {
                     Select.ReleaseAnimation();
                     m.ReleaseAnimation();
+
+                    releaseNumber++;
+                    if (cardSize == releaseNumber)
+                    {
+                        TimerModule module = FindObjectOfType<TimerModule>();
+                        module.isUpdate = false;
+
+                        menu.SetActive(true);
+                        return;
+                    }
                 }
                 else //색이 다를 경우
                 {

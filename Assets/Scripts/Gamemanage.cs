@@ -1,40 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Gamemanage : MonoBehaviour
 {
     public CardModule[] cards = null;
+    public TimerModule timer = null;
+    public ControllManager manager = null;
+    public GameObject menu = null;
 
-    public void GameStart()
+    public void Awake()
     {
-        // List 조사해오기 
-        //List<int> list;
-        //list.Add, list.Remove, list.AddRange
+        OnStart();
+        
+    }
 
-        //Color? R, G, B, A 가 4개 들어가 있는 float 형 구조체 
-        //List? Array?
-        //뭔가 담을 때 사용한다
-        //사용할때는 반드시 선언을 해주어야 한다
+    public void OnStart()
+    {
 
-        int[] intArray = new int[10];//10칸 짜리 공간
-        List<int> intList = new List<int>(); // 리스트 생성 
-
-        intArray[0] = 1;
-        intArray[1] = 2;
-        // ...
-        intArray[9] = 10;
-        //반드시 마지막 값을 접근할 때는 해당크기의 -1 해줘야한다
-        // 컴퓨터의 처음 숫자는 0이니깐 
-
-        intList.Add(1);
-        intList.Add(2);
-
-        //intList.Add(a);
-        intList[0] = 1;
-        //OutOfIndex Error!
-
-
+        menu.SetActive(false);
+        manager.OnStart();
         List<Color> colors = new List<Color>(cards.Length / 2);
         SetRandomColor(colors, cards.Length / 2);
 
@@ -47,6 +33,8 @@ public class Gamemanage : MonoBehaviour
             cards[i].CardColor = colors[i];
             cards[i].gameObject.SetActive(true);
         }
+
+        timer.OnStart();
     }
 
     private void SetRandomColor(List<Color> list, int count)
@@ -81,4 +69,8 @@ public class Gamemanage : MonoBehaviour
         }
     }
 
+    public void OnTitle()
+    {
+        SceneManager.LoadScene(0, LoadSceneMode.Single);
+    }
 }
